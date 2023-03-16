@@ -1,0 +1,23 @@
+
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: docker login
+        env:
+         DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}   
+         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
+        run: |
+         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: docker build golang
+        run: |
+          docker build -t eminoz/graceful .
+      - name: docker push
+        run: |
+         docker push eminoz/k8s-graceful-shutdown    
