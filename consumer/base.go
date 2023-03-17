@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/eminoz/graceful/broker"
 	"github.com/eminoz/graceful/model"
@@ -13,14 +14,16 @@ import (
 
 func RunConsumer() {
 	f := createGracefulShutdown()
-	u := make(chan model.User, 10)
+	u := make(chan model.User)
 	userService := service.UserService{}
-
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
 	go broker.User(ctx, u)
 	go userService.UserProcess(u)
+
 	<-f
 	cancel()
+	time.Sleep(time.Second * 10)
 }
 
 func createGracefulShutdown() chan os.Signal {

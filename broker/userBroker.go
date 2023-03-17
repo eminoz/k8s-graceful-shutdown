@@ -39,17 +39,20 @@ func User(ctx context.Context, u chan<- model.User) {
 		log.Fatalf("%s: %s", "Failed to register consumer", err)
 	}
 
-	for d := range mailqueueConsume {
+	for {
 
 		select {
 		case <-ctx.Done():
 			fmt.Print("all is done")
+
 			return
 		default:
-			user := model.User{}
-			json.Unmarshal(d.Body, &user)
-			u <- user
-			d.Ack(false)
+			for d := range mailqueueConsume {
+				user := model.User{}
+				json.Unmarshal(d.Body, &user)
+				u <- user
+				d.Ack(false)
+			}
 		}
 
 	}
