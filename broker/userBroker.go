@@ -5,12 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/eminoz/graceful/model"
 )
 
-func User(ctx context.Context, u chan model.User) {
+func User(ctx context.Context, u chan<- model.User) {
 
 	ch, conn := GetRabbitChannel()
 	q, err := ch.QueueDeclare(
@@ -44,8 +43,9 @@ func User(ctx context.Context, u chan model.User) {
 
 		select {
 		case <-ctx.Done():
+			fmt.Print("all is done")
 			return
-		case <-time.After(time.Millisecond):
+		default:
 			user := model.User{}
 			json.Unmarshal(d.Body, &user)
 			u <- user
