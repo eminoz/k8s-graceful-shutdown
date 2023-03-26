@@ -46,15 +46,13 @@ func User(ctx context.Context, u chan<- model.User) {
 			fmt.Print("all is done")
 
 			return
-		default:
-			for d := range mailqueueConsume {
-				user := model.User{}
-				json.Unmarshal(d.Body, &user)
-				u <- user
-				d.Ack(false)
-			}
-		}
+		case d := <-mailqueueConsume:
 
+			user := model.User{}
+			json.Unmarshal(d.Body, &user)
+			u <- user
+			d.Ack(false)
+		}
 	}
 
 }

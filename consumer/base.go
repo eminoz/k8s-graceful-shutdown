@@ -14,7 +14,7 @@ import (
 
 func RunConsumer() {
 	f := createGracefulShutdown()
-	u := make(chan model.User)
+	u := make(chan model.User) //if chan size is gave, chan continue to take data after shut down
 	userService := service.UserService{}
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
