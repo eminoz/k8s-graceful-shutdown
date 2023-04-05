@@ -15,4 +15,6 @@ spec:
       containers:
         - name: users
           image: eminoz/k8s-graceful-shutdown 
+          imagePullPolicy: Always # Always pull the latest image
+
 

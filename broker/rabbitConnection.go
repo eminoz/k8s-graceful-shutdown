@@ -11,7 +11,7 @@ var Channel *amqp.Channel
 var Conn *amqp.Connection
 
 func RabbitConnection() {
-	conn, err := amqp.Dial("amqp://" + "myuser" + ":" + "mypassword" + "@" + "172.17.0.7" + ":" + "5672" + "/")
+	conn, err := amqp.Dial("amqp://" + "myuser" + ":" + "mypassword" + "@" + "172.17.0.5" + ":" + "5672" + "/")
 	// conn, err := amqp.Dial("amqp://" + "eminoz" + ":" + "eminoz" + "@" + "localhost" + ":" + "5672" + "/")
 
 	if err != nil {
